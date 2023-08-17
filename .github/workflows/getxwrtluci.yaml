@@ -76,10 +76,10 @@ jobs:
       - name: check out the latest tag
         run: |
           # check out to latest tag
-          # echo "LATEST_TAG now : ${{env.LATEST_TAG}}"
+          echo "LATEST_TAG now : ${{env.LATEST_TAG}}"
           git checkout tags/${{env.LATEST_TAG}}
           # echo "Makefile of abblock"
-          cat net/simple-adblock/Makefile | grep "PKG_RELEASE"
+          # cat net/simple-adblock/Makefile | grep "PKG_RELEASE"
       - name: prepare working directory
         run: |
           # echo "init the latest tag version by removing all .git file"
