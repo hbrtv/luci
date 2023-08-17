@@ -116,7 +116,7 @@ jobs:
           git merge --allow-unrelated-histories -s ours origin/${BRANCH}
           git checkout FETCH_HEAD -- .github/workflows/getxwrtluci.yaml
           git commit -m "version: ${{env.LATEST_TAG}} include workflow file"
-          # git tag ${{env.LATEST_TAG}}
+          git tag ${{env.LATEST_TAG}}
           # cat .github/workflows/getxwrtluci.yaml
           # git push -u origin --tags
           # push both branch and tags
