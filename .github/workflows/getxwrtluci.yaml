@@ -110,6 +110,8 @@ jobs:
       - if: ${{env.LATEST_TAG != env.CURRENT_TAG}}
         name: push if new tag arrived
         run: |
+          REPO="https://${GITHUB_ACTOR}:${{secrets.PAT}}@github.com/${GITHUB_REPOSITORY}.git"
+          BRANCH="${GITHUB_REF/#refs\/heads\//}"
           git branch -a
           git merge --allow-unrelated-histories -s ours origin/${BRANCH}
           git checkout FETCH_HEAD -- .github/workflows/getxwrtluci.yaml
