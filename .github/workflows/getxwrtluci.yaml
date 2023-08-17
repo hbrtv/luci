@@ -44,14 +44,22 @@ jobs:
            sparse-checkout-cone-mode: false
            sparse-checkout: |
              /*
-             !.circleci
              !.github
-             !.keys
-             !net/adguardhome
-             !net/smartdns
-             !net/openvpn
-             !net/openvpm-easy-rsa
-             !net/trojan-go
+             !applications/luci-app-acme
+             !applications/luci-app-adblock
+             !applications/luci-app-aria2
+             !applications/luci-app-cshark
+             !applications/luci-app-dockerman
+             !applications/luci-app-frpc
+             !applications/luci-app-frps
+             !applications/luci-app-openvpn
+             !applications/luci-app-shadowsocks-libev
+             !applications/luci-app-simple-adblock
+             !applications/luci-app-smartdns
+             !applications/luci-app-tinyproxy
+             !applications/luci-app-transmission
+             !applications/luci-app-watchcat
+             !applications/luci-app-xfrpc
            fetch-depth: 0
            # delete paritcular tag
            # fetch all commit and tags using fetch-depth: 0
