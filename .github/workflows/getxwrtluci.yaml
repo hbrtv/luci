@@ -23,6 +23,9 @@ on: workflow_dispatch
 env: 
   LATEST_TAG: 23.06_b202308072021
 
+  # defaut tag of this repo
+  CURRENT_TAG: v0.1
+
 jobs:
   # get-version:
   #   runs-on: ubuntu-latest
@@ -102,11 +105,11 @@ jobs:
           git remote add origin $REPO
           git fetch origin -a
           echo "CURRENT_TAG=$(git describe --tags `git for-each-ref --format="%(refname)" --sort=-creatordate --count=1 refs/tags`)" >> $GITHUB_ENV
-      - name: push if new tag arrived
-        run: |
           echo "LATEST_TAG : ${{env.LATEST_TAG}}"
           echo "CURRENT_TAG: ${{env.CURRENT_TAG}}"
-          if ${{env.LATEST_TAG != env.CURRENT_TAG}}
+      - if: ${{env.LATEST_TAG != env.CURRENT_TAG}}
+        name: push if new tag arrived
+        run: |
           git branch -a
           git merge --allow-unrelated-histories -s ours origin/${BRANCH}
           git checkout FETCH_HEAD -- .github/workflows/getxwrtluci.yaml
