@@ -38,6 +38,10 @@ jobs:
     steps:
       - name: prepare working directory
         run: |
+          git init
+          touch test.txt
+          git add .
+          git commit -m 'init local repo'
           # add local repo as remote using to push new repo 
           REPO="https://${GITHUB_ACTOR}:${{secrets.PAT}}@github.com/${GITHUB_REPOSITORY}.git"
           BRANCH="${GITHUB_REF/#refs\/heads\//}"
