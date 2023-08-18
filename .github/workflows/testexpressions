@@ -1,0 +1,63 @@
+# name: Get the latest Version of x-wrt Package
+# on:
+#  schedule:
+#    - cron: '30 15 * * *'
+
+# on:
+#   schedule:
+#     # * is a special character in YAML so you have to quote this string
+#     - cron:  '*/6 * * * *'
+
+# on:
+#   issue_comment:
+#     types: [created, edited, closed, locked, unlocked, deleted]
+
+# on:
+#   push:
+#     branches:
+#       - main
+#   workflow_dispatch:
+
+on: workflow_dispatch
+
+env: 
+  LATEST_TAG: 23.06_b202308072021
+
+  # defaut tag of this repo
+  CURRENT_TAG: v0.1
+
+jobs:
+  # get-version:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: test-action
+  #       run: echo " action success on schedule" 
+
+  x-wrt-sparsecheckout:
+    runs-on: ubuntu-latest
+    steps:
+      - name: prepare working directory
+        run: |
+          git init
+          git config --global user.email ${{secrets.USEREMAIL}}
+          git config --global user.name ${{secrets.USERNAME}}
+          touch test.txt
+          git add .
+          git commit -m 'init local repo'
+          # add local repo as remote using to push new repo 
+          REPO="https://${GITHUB_ACTOR}:${{secrets.PAT}}@github.com/${GITHUB_REPOSITORY}.git"
+          BRANCH="${GITHUB_REF/#refs\/heads\//}"
+          echo "${GITHUB_ACTOR}'s Working directory is '$(pwd)' GITHUB_WORKSPACE=$GITHUB_WORKSPACE BRANCH=$BRANCH"
+          # echo "before merge"
+          git remote add origin $REPO
+          git fetch --all --tags
+          echo "CURRENT_TAG=$(git describe --tags `git for-each-ref --format="%(refname)" --sort=-creatordate --count=1 refs/tags`)" >> $GITHUB_ENV
+      - name: check result
+        run: |
+          echo "LATEST_TAG : ${{env.LATEST_TAG}}"
+          echo "CURRENT_TAG: ${{env.CURRENT_TAG}}"
+      - name: compare tags
+        if: {{env.LATEST_TAG < env.CURRENT_TAG }}
+        run:|
+          echo "current tag is newer"
+            
