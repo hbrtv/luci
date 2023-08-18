@@ -99,24 +99,22 @@ jobs:
           git commit -m "latest x-wrt package : ${{env.LATEST_TAG}}" > commitlog.txt
           git branch -M main
           # add local repo as remote using to push new repo 
-          REPO="https://${GITHUB_ACTOR}:${{secrets.PAT}}@github.com/${GITHUB_REPOSITORY}.git"
-          BRANCH="${GITHUB_REF/#refs\/heads\//}"
+          echo "REPO=https://${GITHUB_ACTOR}:${{secrets.PAT}}@github.com/${GITHUB_REPOSITORY}.git" >> GITHUB_ENV
+          echo "BRANCH=${GITHUB_REF/#refs\/heads\//}" >> GITHUB_ENV
           echo "${GITHUB_ACTOR}'s Working directory is '$(pwd)' GITHUB_WORKSPACE=$GITHUB_WORKSPACE BRANCH=$BRANCH"
+
+      - name: fetch this repo
+        run: |
+          echo "LATEST_TAG : ${{env.LATEST_TAG}}"
+          echo "CURRENT_TAG: ${{env.CURRENT_TAG}}"
           # echo "before merge"
           git remote add origin $REPO
           git fetch origin -a
           echo "CURRENT_TAG=$(git describe --tags `git for-each-ref --format="%(refname)" --sort=-creatordate --count=1 refs/tags`)" >> $GITHUB_ENV
-
-      - name: check env
-        run: |
-          echo "LATEST_TAG : ${{env.LATEST_TAG}}"
-          echo "CURRENT_TAG: ${{env.CURRENT_TAG}}"
           
-      - if: ${{env.LATEST_TAG != env.CURRENT_TAG}}
+      - if: ${{env.LATEST_TAG > env.CURRENT_TAG}}
         name: push if new tag arrived
         run: |
-          REPO="https://${GITHUB_ACTOR}:${{secrets.PAT}}@github.com/${GITHUB_REPOSITORY}.git"
-          BRANCH="${GITHUB_REF/#refs\/heads\//}"
           git branch -a
           git merge --allow-unrelated-histories -s ours origin/${BRANCH}
           git checkout FETCH_HEAD -- .github/workflows/getxwrtluci.yaml
