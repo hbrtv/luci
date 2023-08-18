@@ -75,6 +75,7 @@ jobs:
           # echo "adguardhome : $(ls net/ | grep adguardhome)"
           # echo "before check out: all tags:" 
           git tag | grep 23.06_b
+          echo "get the max-count=1  tag:  $(git describe --tags `git rev-list --tags --max-count=1`)"
           echo "LATEST_TAG=$(git describe --tags `git rev-list --tags --max-count=1`)" >> $GITHUB_ENV
       - name: check out the latest tag
         run: |
@@ -105,8 +106,12 @@ jobs:
           git remote add origin $REPO
           git fetch origin -a
           echo "CURRENT_TAG=$(git describe --tags `git for-each-ref --format="%(refname)" --sort=-creatordate --count=1 refs/tags`)" >> $GITHUB_ENV
+
+      - name: check env
+        run: |
           echo "LATEST_TAG : ${{env.LATEST_TAG}}"
           echo "CURRENT_TAG: ${{env.CURRENT_TAG}}"
+          
       - if: ${{env.LATEST_TAG != env.CURRENT_TAG}}
         name: push if new tag arrived
         run: |
@@ -120,4 +125,4 @@ jobs:
           # cat .github/workflows/getxwrtluci.yaml
           # git push -u origin --tags
           # push both branch and tags
-          git push --atomic origin ${BRANCH} ${{env.LATEST_TAG}}
+          # git push --atomic origin ${BRANCH} ${{env.LATEST_TAG}}
