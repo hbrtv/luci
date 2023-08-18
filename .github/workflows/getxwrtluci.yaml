@@ -99,12 +99,13 @@ jobs:
           git commit -m "latest x-wrt package : ${{env.LATEST_TAG}}" > commitlog.txt
           git branch -M main
           # add local repo as remote using to push new repo 
-          echo "REPO=https://${GITHUB_ACTOR}:${{secrets.PAT}}@github.com/${GITHUB_REPOSITORY}.git" >> GITHUB_ENV
-          echo "BRANCH=${GITHUB_REF/#refs\/heads\//}" >> GITHUB_ENV
+          echo "REPO=https://${GITHUB_ACTOR}:${{secrets.PAT}}@github.com/${GITHUB_REPOSITORY}.git" >> $GITHUB_ENV
+          echo "BRANCH=${GITHUB_REF/#refs\/heads\//}" >> $GITHUB_ENV
           echo "${GITHUB_ACTOR}'s Working directory is '$(pwd)' GITHUB_WORKSPACE=$GITHUB_WORKSPACE BRANCH=$BRANCH"
 
       - name: fetch this repo
         run: |
+          echo $REPO
           echo "LATEST_TAG : ${{env.LATEST_TAG}}"
           echo "CURRENT_TAG: ${{env.CURRENT_TAG}}"
           echo "before merge"
