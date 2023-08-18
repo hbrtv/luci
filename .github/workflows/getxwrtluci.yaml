@@ -125,4 +125,4 @@ jobs:
           # cat .github/workflows/getxwrtluci.yaml
           # git push -u origin --tags
           # push both branch and tags
-          # git push --atomic origin ${BRANCH} ${{env.LATEST_TAG}}
+          git push --atomic origin ${BRANCH} ${{env.LATEST_TAG}}
