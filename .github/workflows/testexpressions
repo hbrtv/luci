@@ -57,7 +57,7 @@ jobs:
           echo "LATEST_TAG : ${{env.LATEST_TAG}}"
           echo "CURRENT_TAG: ${{env.CURRENT_TAG}}"
       - name: compare tags
-        if: {{env.LATEST_TAG < env.CURRENT_TAG }}
+        if: {{env.LATEST_TAG < env.CURRENT_TAG }} # compare expression
         run:|
           echo "current tag is newer"
             
