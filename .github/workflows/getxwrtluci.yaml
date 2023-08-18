@@ -113,7 +113,7 @@ jobs:
           git fetch origin -a
           echo "CURRENT_TAG=$(git describe --tags `git for-each-ref --format="%(refname)" --sort=-creatordate --count=1 refs/tags`)" >> $GITHUB_ENV
           
-      - if: ${{env.LATEST_TAG == env.CURRENT_TAG}}
+      - if: ${{env.LATEST_TAG > env.CURRENT_TAG}}
         name: push if new tag arrived
         run: |
           echo "LATEST_TAG : ${{env.LATEST_TAG}}"
